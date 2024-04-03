@@ -154,7 +154,7 @@ class MSVDDataset(Dataset):
         self.label_type = 'caption'
         self.neg_param = neg_param
         data = pd.read_csv("./MSRVTT_train.csv",sep=",",on_bad_lines="warn")
-        data["path"]="./MSRVTT/"+data["video_id"]+".mp4"
+        data["path"]="./MSRVTT/"+data["video_id"]+".mp4" # Change this to your path
         self.metadata = data
 
         if self.sliding_window_stride != -1:
