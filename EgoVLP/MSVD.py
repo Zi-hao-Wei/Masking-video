@@ -153,9 +153,9 @@ class MSVDDataset(Dataset):
         self.video_reader = video_reader[reader]
         self.label_type = 'caption'
         self.neg_param = neg_param
-        data = pd.read_csv("./MSVD_train.csv",sep=",",on_bad_lines="warn")
+        data = pd.read_csv("./MSVD_train.csv",sep=",",error_bad_lines="warn")
         data["path"]="./YouTubeClips/"+data["VideoID"]+"_"+data["Start"].astype("str")+"_"+data["End"].astype("str")+".avi"
-        self.metadata = data
+        self.metadata = data #.iloc[:15000]
 
         if self.sliding_window_stride != -1:
             if self.split != 'test':

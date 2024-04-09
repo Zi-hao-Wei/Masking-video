@@ -18,12 +18,12 @@ def run():
                                                            TOKENIZERS_PARALLELISM=False)
 
     # setup data_loader instances
-    data_loader = DataLoader(MSVDDataset(), batch_size=4, shuffle=True,drop_last=True)
-
+    data_loader = DataLoader(MSVDDataset(), batch_size=8, shuffle=True,drop_last=True) #batch_size=4
+    
     model = FrozenInTime().cuda()
 
     loss = NormSoftmaxLoss()
-
+    
     optimizer = torch.optim.AdamW(model.parameters(), lr=3e-5)
 
     writer = None
@@ -33,8 +33,9 @@ def run():
                       writer=writer,
                       tokenizer=tokenizer,
                       max_samples_per_epoch=500000)
-
+    
     trainer.train()
+    
 
 if __name__ == '__main__':
 

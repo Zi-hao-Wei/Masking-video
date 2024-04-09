@@ -37,7 +37,7 @@ class Multi_Trainer_dist_MSVD:
         self.optimizer = optimizer
         self.writer = writer
         self.start_epoch = 0
-        self.epochs = 1000
+        self.epochs = 0 #1000
         self.device = "cuda"
     def _train_epoch(self, epoch):
         """
@@ -73,12 +73,12 @@ class Multi_Trainer_dist_MSVD:
                 loss = self.loss(output)
 
             loss.backward()
-            print(loss)
+            print(f"loss: {loss}")
             self.optimizer.step()
             
             
 
-        self._adjust_learning_rate(self.optimizer, epoch, self.args)
+        # self._adjust_learning_rate(self.optimizer, epoch, self.args)
 
         return
     
@@ -90,3 +90,5 @@ class Multi_Trainer_dist_MSVD:
         for epoch in range(self.start_epoch, self.epochs + 1):
             print(epoch)
             self._train_epoch(epoch)
+        
+        torch.save(self.model,f"MSVD_ours_{self.epochs}.pth")

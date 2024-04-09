@@ -1,1 +1,6 @@
-./EgoVLP/pretrained
+/EgoVLP/pretrained
+/EgoVLP/YouTubeClips/*
+/EgoVLP/TrainValVideo
+/EgoVLP/*/__pycache__/*
+/EgoVLP/__pycache__/*
+/EgoVLP/*.pth
