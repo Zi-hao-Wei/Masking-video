@@ -199,7 +199,7 @@ class MPIIDataset(Dataset):
         try:
             if os.path.isfile(video_fp):
                 imgs, idxs = self.video_reader(video_fp, self.video_params['num_frames'], frame_sample,
-                                               fix_start=fix_start,start_frame=sample['start_frame'],end_frame=['end_frame'])
+                                               fix_start=fix_start,start_frame=sample['start_frame'],end_frame=sample['end_frame'])
             else:
                 print(f"Warning: missing video file {video_fp}.")
                 assert False

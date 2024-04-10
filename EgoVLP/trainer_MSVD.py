@@ -91,4 +91,4 @@ class Multi_Trainer_dist_MSVD:
             print(epoch)
             self._train_epoch(epoch)
         
-        torch.save(self.model,f"MSVD_ours_{self.epochs}.pth")
+        torch.save(self.model,f"MSVD_baseline_{self.epochs}.pth")

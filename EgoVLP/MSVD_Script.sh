@@ -5,10 +5,10 @@
 #SBATCH --nodes=1                    # Run on a single CPU
 #SBATCH --cpus-per-task=16
 #SBATCH --mem-per-cpu=500m
-#SBATCH --partition=gpu
+#SBATCH --partition=spgpu
 #SBATCH --gres=gpu:1
-#SBATCH --time=01:00:00               # Time limit hrs:min:sec
-#SBATCH --output=test.log
+#SBATCH --time=06:00:00               # Time limit hrs:min:sec
+#SBATCH --output=MSVD_baseline_0.log
 #SBATCH --account=eecs592s001w24_class 
 #SBATCH --get-user-env
 
@@ -33,7 +33,7 @@ conda activate egovlp
 # CUDA_VISIBLE_DEVICES=0 python util.py experiments/seg_detector/bbjr_resnet50.yaml --result_dir /home/yuningc/jersey-2023/test_light/images --image_path /home/yuningc/jersey-2023/test/images --resume /home/yuningc/DB/outputs/workspace/L1BalanceCELoss/model/final --box_thresh 0.61 --visualize --image_short_side 128 
 
 
-CUDA_VISIBLE_DEVICES=0  python retrieval.py 
+CUDA_VISIBLE_DEVICES=0  python train_MSVD.py 
 # CUDA_VISIBLE_DEVICES=0 python train.py experiments/seg_detector/CONVERT_ONLY.yaml --num_gpus 1 --validate --localization #--debug #jersey_test.yaml --num_gpus 1 --validate --debug
 # python train.py /home/yuningc/DB/experiments/seg_detector/jersey_extra_dataset.yaml --num_gpus 1 --validate
 

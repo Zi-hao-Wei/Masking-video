@@ -7,8 +7,8 @@
 #SBATCH --mem-per-cpu=500m
 #SBATCH --partition=spgpu
 #SBATCH --gres=gpu:1
-#SBATCH --time=05:00:00               # Time limit hrs:min:sec
-#SBATCH --output=MPII_Ours.log
+#SBATCH --time=04:00:00               # Time limit hrs:min:sec
+#SBATCH --output=MPII_baseline.log
 #SBATCH --account=eecs592s001w24_class 
 #SBATCH --get-user-env
 

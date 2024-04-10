@@ -5,7 +5,8 @@ import torch
 import yaml
 import sys
 import os
-from MSRVTT_test_set import MSRVTT_test
+# from MSRVTT_test_set import MSRVTT_test
+from MSVD_test import MSVD_test
 from torch.utils.data import DataLoader
 from model.naive_model import FrozenInTime
 
@@ -13,7 +14,7 @@ device = "cuda" if torch.cuda.is_available() else "cpu"
 
 
 
-resume = "./100.pth"
+resume = "./MSVD_ours_0.pth"
 model = FrozenInTime()
 checkpoint = torch.load(resume, map_location='cpu')
 
@@ -74,8 +75,8 @@ def compute_retrieval(a2b_sims, return_ranks=True):
         return report_dict
 
 
-valid_dataset = MSRVTT_test()
-valid_dataloader = DataLoader(valid_dataset, batch_size=4, shuffle=True,drop_last=True)
+valid_dataset = MSVD_test()
+valid_dataloader = DataLoader(valid_dataset, batch_size=3, shuffle=True,drop_last=True)
 
 image_features = []
 text_features = []

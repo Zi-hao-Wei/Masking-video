@@ -122,7 +122,7 @@ video_reader = {
 }
 
 
-class MSVDDataset(Dataset):
+class MSVD_test(Dataset):
     def __init__(self,
                     video_params={
                     "input_res": 224,
@@ -153,9 +153,9 @@ class MSVDDataset(Dataset):
         self.video_reader = video_reader[reader]
         self.label_type = 'caption'
         self.neg_param = neg_param
-        data = pd.read_csv("./MSVD_train.csv",sep=",",error_bad_lines="warn")
+        data = pd.read_csv("./test.csv",sep=",",error_bad_lines="warn")
         data["path"]="./YouTubeClips/"+data["VideoID"]+"_"+data["Start"].astype("str")+"_"+data["End"].astype("str")+".avi"
-        self.metadata = data.iloc[:30000]
+        self.metadata = data #.iloc[:15000]
 
         if self.sliding_window_stride != -1:
             if self.split != 'test':
@@ -249,6 +249,6 @@ class MSVDDataset(Dataset):
 
 
 if __name__=="__main__":
-    d = MSVDDataset()
+    d = MSVD_test()
     print(len(d))
-    loader =DataLoader(MSVDDataset(), batch_size=4, shuffle=False)
+    loader =DataLoader(MSVD_test(), batch_size=4, shuffle=False)
