@@ -145,7 +145,7 @@ class MPII_test(Dataset):
         self.label_type = 'caption'
         self.neg_param = neg_param
         data = pd.read_csv("./MPII_test.csv",sep=",",error_bad_lines="warn")
-        data["path"]="./MPII_clip/"+data["file_name"]+"_"+data["start_frame"].astype("str")+"_"+data["end_frame"].astype("str")+".avi"
+        data["path"]="./MPII/"+data["file_name"]+"_"+data["start_frame"].astype("str")+"_"+data["end_frame"].astype("str")+".avi"
         self.metadata = data
 
         if self.sliding_window_stride != -1:
