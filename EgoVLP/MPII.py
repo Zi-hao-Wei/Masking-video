@@ -68,12 +68,12 @@ def sample_frames_start_end(num_frames, start, end, sample='rand', fix_start=Non
 
     return frame_idxs
 
-def read_frames_cv2(video_path, num_frames, sample='rand', fix_start=None,start_frame=0,end_frame=0):
+def read_frames_cv2(video_path, num_frames, sample='rand', fix_start=None):
     cap = cv2.VideoCapture(video_path)
     assert (cap.isOpened())
     vlen = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
     # get indexes of sampled frames
-    frame_idxs = sample_frames_start_end(num_frames, start_frame, end_frame, sample=sample, fix_start=fix_start)
+    frame_idxs = sample_frames(num_frames, vlen, sample=sample, fix_start=fix_start)
     frames = []
     success_idxs = []
     for index in frame_idxs:
@@ -94,7 +94,7 @@ def read_frames_cv2(video_path, num_frames, sample='rand', fix_start=None,start_
     cap.release()
     return frames, success_idxs
 
-def read_frames_av(video_path, num_frames, sample='rand', fix_start=None, start_frame=0, end_frame=0):
+def read_frames_av(video_path, num_frames, sample='rand', fix_start=None):
     reader = av.open(video_path)
     try:
         frames = []
@@ -102,20 +102,11 @@ def read_frames_av(video_path, num_frames, sample='rand', fix_start=None, start_
     except (RuntimeError, ZeroDivisionError) as exception:
         print('{}: WEBM reader cannot open {}. Empty '
               'list returned.'.format(type(exception).__name__, video_path))
-    # vlen = len(frames)
-    frame_idxs = sample_frames_start_end(num_frames, start_frame, end_frame, sample=sample, fix_start=fix_start)
+    vlen = len(frames)
+    frame_idxs = sample_frames(num_frames, vlen, sample=sample, fix_start=fix_start)
     frames = torch.stack([frames[idx] for idx in frame_idxs]).float() / 255
     frames = frames.permute(0, 3, 1, 2)
  
-def get_video_len(video_path):
-    cap = cv2.VideoCapture(video_path)
-    if not (cap.isOpened()):
-        return False
-    vlen = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
-    cap.release()
-    return vlen
-
-
 video_reader = {
     'av': read_frames_av,
     'cv2': read_frames_cv2,
@@ -154,7 +145,7 @@ class MPIIDataset(Dataset):
         self.label_type = 'caption'
         self.neg_param = neg_param
         data = pd.read_csv("./MPII_train.csv",sep=",",error_bad_lines="warn")
-        data["path"]="./MPII/"+data["file_name"]+".avi"
+        data["path"]="./MPII_clip/"+data["file_name"]+"_"+data["start_frame"].astype("str")+"_"+data["end_frame"].astype("str")+".avi"
         self.metadata = data
 
         if self.sliding_window_stride != -1:
@@ -199,7 +190,7 @@ class MPIIDataset(Dataset):
         try:
             if os.path.isfile(video_fp):
                 imgs, idxs = self.video_reader(video_fp, self.video_params['num_frames'], frame_sample,
-                                               fix_start=fix_start,start_frame=sample['start_frame'],end_frame=sample['end_frame'])
+                                               fix_start=fix_start)
             else:
                 print(f"Warning: missing video file {video_fp}.")
                 assert False

@@ -5,10 +5,10 @@
 #SBATCH --nodes=1                    # Run on a single CPU
 #SBATCH --cpus-per-task=3
 #SBATCH --mem-per-cpu=3g
-#SBATCH --partition=gpu
+#SBATCH --partition=spgpu
 #SBATCH --gres=gpu:1
 #SBATCH --time=06:30:00               # Time limit hrs:min:sec
-#SBATCH --output=MPII_ours.log
+#SBATCH --output=test_MPII_baseline.log
 #SBATCH --account=eecs592s001w24_class 
 #SBATCH --get-user-env
 
@@ -24,6 +24,6 @@ source ~/.bashrc
 
 conda activate egovlp
 
-CUDA_VISIBLE_DEVICES=0  python train_MPII.py 
+python retrieval.py
 
 pwd; hostname; date

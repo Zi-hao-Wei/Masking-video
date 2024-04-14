@@ -154,7 +154,7 @@ class MSVDDataset(Dataset):
         self.label_type = 'caption'
         self.neg_param = neg_param
         data = pd.read_csv("./MSVD_train.csv",sep=",",error_bad_lines="warn")
-        data["path"]="./YouTubeClips/"+data["VideoID"]+"_"+data["Start"].astype("str")+"_"+data["End"].astype("str")+".avi"
+        data["path"]="./MSVD/"+data["VideoID"]+"_"+data["Start"].astype("str")+"_"+data["End"].astype("str")+".avi"
         self.metadata = data.iloc[:30000]
 
         if self.sliding_window_stride != -1:

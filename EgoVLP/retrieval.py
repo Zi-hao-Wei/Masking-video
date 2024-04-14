@@ -6,19 +6,20 @@ import yaml
 import sys
 import os
 # from MSRVTT_test_set import MSRVTT_test
-from MSVD_test import MSVD_test
+from MPII_test import MPII_test
 from torch.utils.data import DataLoader
 from model.naive_model import FrozenInTime
+
+import transformers
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
 
 
 
-resume = "./MSVD_ours_0.pth"
-model = FrozenInTime()
-checkpoint = torch.load(resume, map_location='cpu')
+resume = "./MPII_baseline_0.pth"
+model = FrozenInTime().cuda()
 
-
+model = torch.load(resume, map_location='cpu').cuda()
 
 def compute_similarity(image_features, text_features, bs = 1000):
     # compute similarity
@@ -75,20 +76,34 @@ def compute_retrieval(a2b_sims, return_ranks=True):
         return report_dict
 
 
-valid_dataset = MSVD_test()
+valid_dataset = MPII_test()
 valid_dataloader = DataLoader(valid_dataset, batch_size=3, shuffle=True,drop_last=True)
 
 image_features = []
 text_features = []
+'''
+!!!!!!!!!!!!!!!!!!!!!!!!!!!
+'''
+tokenizer = transformers.AutoTokenizer.from_pretrained("distilbert-base-uncased",
+                                                           TOKENIZERS_PARALLELISM=False)
+'''
+!!!!!!!!!!!!!!!!!!!!!!!!!!!
+'''
 for batch_idx, batch in enumerate(valid_dataloader):
     print('Evaluating batch {}/{}'.format(batch_idx, len(valid_dataloader)), end = "\r")
     
+    ''' !!!!
     model_out = model(batch.cuda())
+
 
     text_emb = model_out["text_features"] #embed with text encoder
     image_emb = model_out["image_features"]  #embed with image encoder
-    
-
+    '''
+    batch['text'] = tokenizer(batch['text'], return_tensors='pt', padding=True,
+                                            truncation=True)
+    batch['text'] = {key: val.to(device) for key, val in batch['text'].items()}
+    batch['video'] = batch['video'].to(device)
+    text_emb, image_emb = model(batch)
     text_features.append(text_emb.detach().cpu())
     image_features.append(image_emb.detach().cpu())
 
