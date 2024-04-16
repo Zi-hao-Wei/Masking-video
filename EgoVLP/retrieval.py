@@ -6,7 +6,7 @@ import yaml
 import sys
 import os
 # from MSRVTT_test_set import MSRVTT_test
-from MPII_test import MPII_test
+from MSVD_test import MSVD_test
 from torch.utils.data import DataLoader
 from model.naive_model import FrozenInTime
 
@@ -16,10 +16,11 @@ device = "cuda" if torch.cuda.is_available() else "cpu"
 
 
 
-resume = "./MPII_baseline_0.pth"
+resume = "./MSVD_random_10.pth"
 model = FrozenInTime().cuda()
 
 model = torch.load(resume, map_location='cpu').cuda()
+model.eval()
 
 def compute_similarity(image_features, text_features, bs = 1000):
     # compute similarity
@@ -76,7 +77,7 @@ def compute_retrieval(a2b_sims, return_ranks=True):
         return report_dict
 
 
-valid_dataset = MPII_test()
+valid_dataset = MSVD_test()
 valid_dataloader = DataLoader(valid_dataset, batch_size=3, shuffle=True,drop_last=True)
 
 image_features = []

@@ -193,7 +193,7 @@ class PatchDropout(nn.Module):
         self.exclude_first_token = exclude_first_token  # exclude CLS token
 
     def forward(self, x, N, L, D):
-        print(x.shape)
+        # print(x.shape)
         N_o, L_o, D_o = x.shape
 
         if not self.training or self.prob == 0.:
@@ -369,7 +369,7 @@ class SpaceTimeTransformer(nn.Module):
         self.temporal_embed = nn.Parameter(torch.zeros(1, num_frames, embed_dim))
 
         self.pos_drop = nn.Dropout(p=drop_rate)
-        self.patch_drop =  PatchDropout(prob=0)
+        self.patch_drop =  PatchDropout(prob=0.5)
         self.patch_drop_ours = PatchDropoutSim(prob=0.05)
         dpr = [x.item() for x in torch.linspace(0, drop_path_rate, depth)]  # stochastic depth decay rule
         self.blocks = nn.ModuleList([
@@ -478,7 +478,7 @@ class SpaceTimeTransformer(nn.Module):
         x,new_L = self.patch_drop(x,N,L,D)
         self.patches_per_frame = new_L
         
-        # print("After Droppoing",x.shape)
+        print("After Droppoing",x.shape)
 
         # x,_,_= self.patch_drop_ours(x)
         # print("Output",x.shape)

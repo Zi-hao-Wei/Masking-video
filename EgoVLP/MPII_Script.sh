@@ -3,12 +3,12 @@
 #SBATCH --mail-type=END       # Mail events (NONE, BEGIN, END, FAIL, ALL)
 #SBATCH --mail-user=yuningc@umich.edu     # Where to send mail	
 #SBATCH --nodes=1                    # Run on a single CPU
-#SBATCH --cpus-per-task=3
+#SBATCH --cpus-per-task=8
 #SBATCH --mem-per-cpu=3g
-#SBATCH --partition=gpu
+#SBATCH --partition=spgpu
 #SBATCH --gres=gpu:1
-#SBATCH --time=06:30:00               # Time limit hrs:min:sec
-#SBATCH --output=MPII_ours.log
+#SBATCH --time=02:30:00               # Time limit hrs:min:sec
+#SBATCH --output=MPII_baseline.log
 #SBATCH --account=eecs592s001w24_class 
 #SBATCH --get-user-env
 

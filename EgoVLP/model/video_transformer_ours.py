@@ -210,7 +210,7 @@ class PatchDropoutSim(nn.Module):
 
     def forward(self, x,N,L,D,sim=0.8):
         mask_ratio = self.prob
-        N_o, L_o, D_o = x.shape
+        N_o, L_o, D_o = x.sfhape
         if not self.training or self.prob == 0.:
             return x
 

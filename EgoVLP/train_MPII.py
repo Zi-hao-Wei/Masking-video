@@ -18,13 +18,13 @@ def run():
                                                            TOKENIZERS_PARALLELISM=False)
 
     # setup data_loader instances
-    data_loader = DataLoader(MPIIDataset(), batch_size=3, shuffle=True,drop_last=True,num_workers=3) #batch_size=4
+    data_loader = DataLoader(MPIIDataset(), batch_size=8, shuffle=True,drop_last=True,num_workers=8) #batch_size=4
     
     model = FrozenInTime().cuda()
 
     loss = NormSoftmaxLoss()
     
-    optimizer = torch.optim.AdamW(model.parameters(), lr=4e-6)
+    optimizer = torch.optim.AdamW(model.parameters(), lr=2e-5)
 
     writer = None
  
